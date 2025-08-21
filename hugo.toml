@@ -1,0 +1,25 @@
+baseURL = "https://surajit93.github.io/latestvlogs/"
+languageCode = "en-us"
+title = "LatestVlogs - Fear & Greed Daily"
+theme = "PaperMod"
+paginate = 10
+enableRobotsTXT = true
+canonifyURLs = true
+
+[params]
+  author = "Surajit Biswas"
+  description = "Daily trending finance & tech topics—fear & greed driven, SEO-first."
+  keywords = ["finance","crypto","tech","trending","fear","greed"]
+  googleAnalytics = ""            # put G-XXXXX if available
+  adsenseClient = "ca-pub-REPLACE" # put your AdSense client ID
+  defaultAdSlot = "1234567890"    # put default ad slot ID
+  siteLogo = "/images/logo.png"
+
+[outputs]
+  home = ["HTML","RSS","JSON"]
+
+[permalinks]
+  posts = "/posts/:year/:month/:slug/"
+
+[markup.goldmark.renderer]
+  unsafe = true

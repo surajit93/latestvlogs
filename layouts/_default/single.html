@@ -1,0 +1,56 @@
+{{/* single page: hero -> content -> ads -> share -> footer. one-screen sections */}}
+<!doctype html>
+<html>
+  <head>
+    {{ partial "head.html" . }}
+    <link rel="stylesheet" href="{{ "css/onepage.css" | relURL }}">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  </head>
+  <body>
+    <div class="main-container">
+      <section class="section section--hero">
+        <div class="post-wrapper">
+          <h1 style="font-size:clamp(24px,4vw,48px)">{{ .Title }}</h1>
+          <p style="opacity:.85">{{ with .Params.description }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
+          {{ with .Params.image }}<img src="{{ . | absURL }}" alt="{{ $.Title }}" style="max-width:360px;margin-top:16px;border-radius:8px">{{ end }}
+        </div>
+      </section>
+
+      <section class="section section--content">
+        <div class="post-wrapper">
+          <article>
+            {{ .Content }}
+          </article>
+
+          <div class="ad-slot">
+            <!-- central ad placeholder: uses config params -->
+            <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="{{ .Site.Params.adsenseClient }}"
+               data-ad-slot="{{ .Site.Params.defaultAdSlot }}"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          </div>
+
+          <div class="share-buttons">
+            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}">Share on Facebook</a>
+            &nbsp;|&nbsp;
+            <a target="_blank" href="https://twitter.com/intent/tweet?text={{ urlquery .Title }}&url={{ .Permalink }}">Tweet</a>
+            &nbsp;|&nbsp;
+            <a target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink }}">LinkedIn</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" style="background:#f6f7fb;">
+        <div class="post-wrapper">
+          <p style="opacity:.6">Published {{ .Date.Format "2006-01-02 15:04 MST" }} • {{ .Params.tags | delimit ", " }}</p>
+          <footer>
+            <p><a href="{{ "/privacy-policy/" | relURL }}">Privacy Policy</a> • <a href="{{ "/" | relURL }}">Home</a></p>
+          </footer>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

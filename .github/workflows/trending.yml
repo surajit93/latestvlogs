@@ -1,0 +1,45 @@
+name: Auto daily topic
+
+on:
+  schedule:
+    - cron: "0 3 * * *"   # runs daily at 03:00 UTC (~08:30 IST). change if needed
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+          submodules: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install feedparser python-slugify requests
+
+      - name: Run generator
+        run: python scripts/generate_daily_topic.py
+
+      - name: Commit and push (if created)
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "chore(auto): add daily trending post [skip ci]"
+            git push origin HEAD:main
+          else
+            echo "No changes to commit"
+          fi
